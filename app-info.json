@@ -1,0 +1,11 @@
+{
+  "name": "NexWeba",
+  "network": "Testnet",
+  "description": "NexWeba provides domain utilities and ecosystem-ready applications for scalable digital projects.",
+  "status": "Under Development",
+  "piCompliance": {
+    "walletAccess": false,
+    "payments": false,
+    "dataCollection": false
+  }
+}
