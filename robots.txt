@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# NexWeba Testnet application
+# No financial services or transactions
