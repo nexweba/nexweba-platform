@@ -1,11 +1,10 @@
 {
   "name": "NexWeba",
-  "network": "Testnet",
-  "description": "NexWeba provides domain utilities and ecosystem-ready applications for scalable digital projects.",
-  "status": "Under Development",
-  "piCompliance": {
-    "walletAccess": false,
-    "payments": false,
-    "dataCollection": false
-  }
+  "network": "testnet",
+  "description": "NexWeba is a structured digital platform focused on web naming, domain utilities, and ecosystem-ready applications for scalable digital projects.",
+  "status": "development",
+  "financial_services": false,
+  "wallet_access": false,
+  "payments_enabled": false,
+  "data_collection": false
 }
