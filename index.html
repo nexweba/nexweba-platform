@@ -12,25 +12,60 @@
   <link rel="apple-touch-icon" href="/logo.png" />
   <link rel="manifest" href="/manifest.json" />
 
+  <!-- Pi SDK -->
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
+      color: #111;
+      margin: 0;
+      padding: 40px;
+    }
+    main {
+      max-width: 820px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #222;
+    }
+    hr {
+      margin: 30px 0;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .center {
+      text-align: center;
+      margin: 30px 0;
+    }
+    #transactionStatus {
+      margin-top: 15px;
+      color: #555;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
-<body style="
-  font-family: Arial, Helvetica, sans-serif;
-  background: #ffffff;
-  color: #111;
-  margin: 0;
-  padding: 40px;
-">
-
-  <main style="max-width: 820px; margin: auto;">
-
+<body>
+  <main>
     <!-- Logo -->
-    <div style="text-align:center; margin-bottom:30px;">
+    <div class="center">
       <img src="/logo.png" alt="NexWeba Logo" style="max-width:140px;">
     </div>
 
     <h1>NexWeba</h1>
-
     <p>
       NexWeba is a professionally structured digital platform focused on web naming,
       domain utilities, and ecosystem-ready applications designed to support
@@ -54,11 +89,7 @@
       NexWeba currently operates exclusively on the <strong>Pi Testnet</strong>.
       All features are under development and testing.
     </p>
-
-    <p>
-      <strong>No financial services, payments, wallet access, or transactions
-      are enabled or requested.</strong>
-    </p>
+    <p><strong>No financial services, payments, wallet access, or transactions are enabled or requested.</strong></p>
 
     <hr>
 
@@ -73,8 +104,16 @@
 
     <hr>
 
-    <h2>Roadmap</h2>
+    <h2>Stage 10 – Process Transaction</h2>
+    <p>This button allows you to process a Testnet transaction to satisfy Pi Core team Stage 10 requirements.</p>
+    <div class="center">
+      <button id="processTxBtn">Process Testnet Transaction</button>
+      <div id="transactionStatus"></div>
+    </div>
 
+    <hr>
+
+    <h2>Roadmap</h2>
     <p><strong>Phase 1 – Platform Foundation (Current)</strong></p>
     <ul>
       <li>Core platform setup</li>
@@ -101,8 +140,30 @@
       © 2026 NexWeba<br>
       Testnet Application – No financial activity enabled
     </p>
-
   </main>
 
+  <script>
+    // Initialize Pi SDK
+    const pi = new PiSDK({ sandbox: true });
+
+    const btn = document.getElementById("processTxBtn");
+    const status = document.getElementById("transactionStatus");
+
+    btn.addEventListener("click", async () => {
+      status.textContent = "Processing transaction...";
+      try {
+        const result = await pi.requestPayment({
+          amount: 0.1, // Testnet Pi
+          currency: "Pi",
+          description: "Stage 10 Testnet Transaction"
+        });
+        status.textContent = "Transaction successful! ✅";
+        console.log("Transaction result:", result);
+      } catch (err) {
+        status.textContent = "Transaction failed ❌ Check console.";
+        console.error("Transaction error:", err);
+      }
+    });
+  </script>
 </body>
-</html>
+  </html>
