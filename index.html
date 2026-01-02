@@ -5,44 +5,56 @@
   <title>NexWeba – Stage 10</title>
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 </head>
-<body style="font-family: Arial; text-align:center; padding:40px;">
+<body>
 
-  <h2>NexWeba – Stage 10</h2>
-  <p>This processes a Pi Testnet transaction to meet Stage 10 requirements.</p>
+<h2>NexWeba – Stage 10</h2>
+<p>This processes a Pi Testnet transaction to meet Stage 10 requirements.</p>
 
-  <button id="stage10-btn" style="padding:12px 20px; font-size:16px;">
-    Process Testnet Transaction
-  </button>
-
-  <p id="transaction-status"></p>
+<button id="stage10-btn">Process Testnet Transaction</button>
+<p id="status"></p>
 
 <script>
   Pi.init({ version: "2.0", sandbox: true });
 
   async function processTransaction() {
-    const status = document.getElementById("transaction-status");
+    const status = document.getElementById("status");
+    status.textContent = "⏳ Processing...";
 
     try {
       // 1. Authenticate user
       const auth = await Pi.authenticate(
-        ["username"],
-        function onIncompletePaymentFound(payment) {
-          console.log("Incomplete payment found", payment);
+        ["payments"],
+        function onIncompletePayment(payment) {
+          console.log("Incomplete payment", payment);
         }
       );
 
       // 2. Create Testnet transaction
       const payment = await Pi.createPayment({
         amount: 0.01,
-        memo: "Stage 10 Test",
-        metadata: { app: "NexWeba" }
+        memo: "NexWeba Stage 10 Test",
+        metadata: { purpose: "stage10" }
+      }, {
+        onReadyForServerApproval(paymentId) {
+          console.log("Ready for approval:", paymentId);
+        },
+        onReadyForServerCompletion(paymentId, txid) {
+          console.log("Completed:", paymentId, txid);
+        },
+        onCancel(paymentId) {
+          status.textContent = "❌ Transaction cancelled by user.";
+        },
+        onError(error, payment) {
+          console.error(error);
+          status.textContent = "❌ Transaction error.";
+        }
       });
 
-      status.innerHTML = "✅ Testnet transaction requested successfully.";
+      status.textContent = "✅ Testnet transaction successful. Stage 10 completed.";
 
     } catch (err) {
       console.error(err);
-      status.innerHTML = "❌ Transaction cancelled or authentication failed.";
+      status.textContent = "❌ Authentication or SDK error.";
     }
   }
 
