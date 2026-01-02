@@ -1,33 +1,116 @@
-<script src="https://cdn.jsdelivr.net/npm/pi-network-sdk/dist/pi-network.min.js"></script>
-<script>
-  const pi = new PiNetwork({ sandbox: true });
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NexWeba – Stage 10 Testnet Transaction</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  async function processTransaction() {
-    const statusEl = document.getElementById("transaction-status");
+  <!-- Pi Network SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/pi-network-sdk/dist/pi-network.min.js"></script>
 
-    try {
-      // Step 1: Request user login
-      const user = await pi.requestLogin();
-      if (!user.loggedIn) {
-        statusEl.textContent = "❌ Please login to Pi Wallet first!";
-        return;
-      }
-
-      // Step 2: Process Testnet transaction
-      const tx = await pi.transaction({
-        recipient: "PUT_YOUR_TESTNET_APP_WALLET_HERE", // Your Testnet app wallet
-        amount: "0.01", // Small Testnet Pi
-        currency: "Pi",
-        memo: "Stage 10 Test"
-      });
-
-      console.log(tx); // Optional: for debug
-      statusEl.textContent = "✅ Testnet transaction successful! Stage 10 complete.";
-    } catch (err) {
-      console.error(err);
-      statusEl.textContent = "❌ Transaction failed. Check console for details.";
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-  }
 
-  document.getElementById("stage10-btn").addEventListener("click", processTransaction);
-</script>
+    .container {
+      background: #020617;
+      padding: 30px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #cbd5f5;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4f46e5;
+    }
+
+    #transaction-status {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>NexWeba – Stage 10</h1>
+    <p>
+      This action processes a <strong>Pi Testnet transaction</strong> to satisfy
+      <strong>Pi Core Team Stage 10 requirements</strong>.
+    </p>
+
+    <button id="stage10-btn">Process Testnet Transaction</button>
+
+    <div id="transaction-status"></div>
+  </div>
+
+  <script>
+    // Initialize Pi SDK (Sandbox = Testnet)
+    const pi = new PiNetwork({ sandbox: true });
+
+    async function processTransaction() {
+      const statusEl = document.getElementById("transaction-status");
+      statusEl.textContent = "⏳ Connecting to Pi Wallet...";
+
+      try {
+        // Step 1: Login
+        const user = await pi.requestLogin();
+        if (!user || !user.loggedIn) {
+          statusEl.textContent = "❌ Pi login failed.";
+          return;
+        }
+
+        // Step 2: Testnet transaction
+        const tx = await pi.transaction({
+          recipient: "TESTNET_APP_WALLET_ADDRESS", // ← replace this
+          amount: "0.01",
+          currency: "Pi",
+          memo: "NexWeba Stage 10 Testnet Transaction"
+        });
+
+        console.log("Transaction:", tx);
+        statusEl.textContent = "✅ Testnet transaction successful! Stage 10 complete.";
+
+      } catch (error) {
+        console.error(error);
+        statusEl.textContent = "❌ Transaction failed. Open console for details.";
+      }
+    }
+
+    document
+      .getElementById("stage10-btn")
+      .addEventListener("click", processTransaction);
+  </script>
+</body>
+</html>
