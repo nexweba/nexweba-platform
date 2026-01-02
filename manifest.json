@@ -1,12 +1,11 @@
 {
   "name": "NexWeba",
   "short_name": "NexWeba",
-  "description": "A structured digital platform for web naming, domain utilities, and ecosystem-ready applications operating on Pi Testnet.",
+  "description": "NexWeba is a structured digital platform focused on web naming, domain utilities, and ecosystem-ready applications.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#111111",
-  "orientation": "portrait",
+  "theme_color": "#5c2dbf",
   "icons": [
     {
       "src": "/logo.png",
