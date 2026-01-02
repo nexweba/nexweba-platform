@@ -1,102 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>NexWeba – Stage 10</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Pi Network SDK -->
+  <!-- Pi SDK -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+  <script>
+    Pi.init({ version: "2.0", sandbox: true });
+  </script>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e5e7eb;
+      background: #f9fafb;
       text-align: center;
       padding: 40px;
     }
-    .card {
-      max-width: 420px;
-      margin: auto;
-      background: #020617;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 0 30px rgba(0,0,0,0.6);
-    }
-    h1 {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
-    p {
-      font-size: 14px;
-      color: #9ca3af;
-    }
     button {
-      margin-top: 20px;
-      padding: 12px 24px;
-      font-size: 15px;
-      border-radius: 8px;
-      border: none;
-      background: #6366f1;
-      color: white;
+      padding: 14px 24px;
+      font-size: 16px;
       cursor: pointer;
-    }
-    button:disabled {
-      background: #374151;
-    }
-    #status {
-      margin-top: 15px;
-      font-size: 14px;
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>NexWeba – Stage 10</h1>
-    <p>
-      This action processes a Pi Testnet transaction to satisfy
-      Pi Core Team Stage 10 requirements.
-    </p>
 
-    <button id="stage10Btn">Process Testnet Transaction</button>
-    <div id="status"></div>
-  </div>
+<h2>NexWeba – Stage 10</h2>
+<p>This processes a Pi Testnet transaction to meet Stage 10 requirements.</p>
 
-  <script>
-    Pi.init({ version: "2.0", sandbox: true });
+<button onclick="processStage10()">Process Testnet Transaction</button>
 
-    const button = document.getElementById("stage10Btn");
-    const status = document.getElementById("status");
+<p id="status"></p>
 
-    button.onclick = async () => {
-      try {
-        status.textContent = "🔄 Waiting for Pi Wallet approval...";
+<script>
+async function processStage10() {
+  const status = document.getElementById("status");
 
-        const auth = await Pi.authenticate(
-          ["username"],
-          onIncompletePaymentFound
-        );
+  try {
+    // 1️⃣ Authenticate user
+    const auth = await Pi.authenticate(
+      ["username"],
+      onIncompletePayment
+    );
 
-        const payment = await Pi.createPayment({
-          amount: 0.01,
-          memo: "NexWeba Stage 10 Testnet",
-          metadata: { purpose: "stage10" }
-        });
-
-        console.log(payment);
-        status.textContent = "✅ Testnet transaction successful!";
-
-      } catch (e) {
-        console.error(e);
-        status.textContent = "❌ Transaction cancelled or failed.";
+    // 2️⃣ Create Testnet payment
+    const payment = await Pi.createPayment({
+      amount: 0.01,
+      memo: "NexWeba Stage 10 Test",
+      metadata: { purpose: "stage10" }
+    }, {
+      onReadyForServerApproval: function(paymentId) {
+        console.log("Ready for approval:", paymentId);
+      },
+      onReadyForServerCompletion: function(paymentId, txid) {
+        console.log("Completed:", paymentId, txid);
+        status.textContent = "✅ Testnet transaction completed successfully.";
+      },
+      onCancel: function(paymentId) {
+        status.textContent = "❌ Transaction cancelled.";
+      },
+      onError: function(error) {
+        console.error(error);
+        status.textContent = "❌ Transaction failed.";
       }
-    };
+    });
 
-    function onIncompletePaymentFound(payment) {
-      console.log("Incomplete payment found:", payment);
-    }
-  </script>
+  } catch (err) {
+    console.error(err);
+    status.textContent = "❌ Authentication or SDK error.";
+  }
+}
+
+function onIncompletePayment(payment) {
+  console.log("Incomplete payment found:", payment);
+}
+</script>
+
 </body>
 </html>
