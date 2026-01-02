@@ -2,60 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>NexWeba – Stage 10 Testnet Transaction</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexWeba – Stage 10</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Pi Network SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/pi-network-sdk/dist/pi-network.min.js"></script>
+  <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
   <style>
     body {
       font-family: Arial, sans-serif;
       background: #0f172a;
       color: #e5e7eb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      text-align: center;
+      padding: 40px;
     }
-
-    .container {
+    .card {
+      max-width: 420px;
+      margin: auto;
       background: #020617;
-      padding: 30px;
       border-radius: 12px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+      padding: 30px;
+      box-shadow: 0 0 30px rgba(0,0,0,0.6);
     }
-
     h1 {
       font-size: 22px;
       margin-bottom: 10px;
     }
-
     p {
       font-size: 14px;
-      line-height: 1.6;
-      color: #cbd5f5;
+      color: #9ca3af;
     }
-
     button {
       margin-top: 20px;
-      width: 100%;
-      padding: 12px;
+      padding: 12px 24px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: none;
       background: #6366f1;
       color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 15px;
       cursor: pointer;
     }
-
-    button:hover {
-      background: #4f46e5;
+    button:disabled {
+      background: #374151;
     }
-
-    #transaction-status {
+    #status {
       margin-top: 15px;
       font-size: 14px;
     }
@@ -63,54 +53,50 @@
 </head>
 
 <body>
-  <div class="container">
+  <div class="card">
     <h1>NexWeba – Stage 10</h1>
     <p>
-      This action processes a <strong>Pi Testnet transaction</strong> to satisfy
-      <strong>Pi Core Team Stage 10 requirements</strong>.
+      This action processes a Pi Testnet transaction to satisfy
+      Pi Core Team Stage 10 requirements.
     </p>
 
-    <button id="stage10-btn">Process Testnet Transaction</button>
-
-    <div id="transaction-status"></div>
+    <button id="stage10Btn">Process Testnet Transaction</button>
+    <div id="status"></div>
   </div>
 
   <script>
-    // Initialize Pi SDK (Sandbox = Testnet)
-    const pi = new PiNetwork({ sandbox: true });
+    Pi.init({ version: "2.0", sandbox: true });
 
-    async function processTransaction() {
-      const statusEl = document.getElementById("transaction-status");
-      statusEl.textContent = "⏳ Connecting to Pi Wallet...";
+    const button = document.getElementById("stage10Btn");
+    const status = document.getElementById("status");
 
+    button.onclick = async () => {
       try {
-        // Step 1: Login
-        const user = await pi.requestLogin();
-        if (!user || !user.loggedIn) {
-          statusEl.textContent = "❌ Pi login failed.";
-          return;
-        }
+        status.textContent = "🔄 Waiting for Pi Wallet approval...";
 
-        // Step 2: Testnet transaction
-        const tx = await pi.transaction({
-          recipient: "TESTNET_APP_WALLET_ADDRESS", // ← replace this
-          amount: "0.01",
-          currency: "Pi",
-          memo: "NexWeba Stage 10 Testnet Transaction"
+        const auth = await Pi.authenticate(
+          ["username"],
+          onIncompletePaymentFound
+        );
+
+        const payment = await Pi.createPayment({
+          amount: 0.01,
+          memo: "NexWeba Stage 10 Testnet",
+          metadata: { purpose: "stage10" }
         });
 
-        console.log("Transaction:", tx);
-        statusEl.textContent = "✅ Testnet transaction successful! Stage 10 complete.";
+        console.log(payment);
+        status.textContent = "✅ Testnet transaction successful!";
 
-      } catch (error) {
-        console.error(error);
-        statusEl.textContent = "❌ Transaction failed. Open console for details.";
+      } catch (e) {
+        console.error(e);
+        status.textContent = "❌ Transaction cancelled or failed.";
       }
-    }
+    };
 
-    document
-      .getElementById("stage10-btn")
-      .addEventListener("click", processTransaction);
+    function onIncompletePaymentFound(payment) {
+      console.log("Incomplete payment found:", payment);
+    }
   </script>
 </body>
 </html>
