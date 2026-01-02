@@ -3,125 +3,171 @@
 <head>
   <meta charset="UTF-8" />
   <title>NexWeba</title>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="NexWeba – Web Naming & Domain Utilities, Testnet Ready." />
+  <meta name="description" content="NexWeba is a professional Pi Testnet platform focused on web naming, domain utilities, and ecosystem-ready digital applications." />
 
   <!-- App Identity -->
   <link rel="icon" href="/logo.png" />
   <link rel="apple-touch-icon" href="/logo.png" />
   <link rel="manifest" href="/manifest.json" />
 
-  <!-- Pi SDK -->
-  <script src="https://cdn.jsdelivr.net/npm/@pi-network/pi-sdk"></script>
-
+  <!-- Styles -->
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background:#f9f9f9;
-      color:#111;
-      margin:0;
-      padding:40px;
-      transition: background 0.3s;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f9f9f9;
+      color: #111;
+      margin: 0;
+      padding: 40px;
     }
     main {
-      max-width:800px;
-      margin:auto;
-      background:#fff;
-      padding:30px;
-      border-radius:12px;
-      box-shadow:0 4px 20px rgba(0,0,0,0.1);
+      max-width: 820px;
+      margin: auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     }
-    hr {
-      margin:25px 0;
-      border:0;
-      border-top:1px solid #eee;
+    img.logo {
+      max-width: 140px;
+      display: block;
+      margin: 0 auto 20px auto;
     }
     h1, h2 {
-      color:#222;
-      margin-bottom:10px;
-    }
-    p, ul {
-      font-size:16px;
-      line-height:1.5;
+      color: #1a1a1a;
     }
     ul {
-      margin-left:20px;
+      padding-left: 20px;
     }
     button {
-      background:#4CAF50;
-      color:#fff;
-      padding:14px 26px;
-      border:none;
-      border-radius:8px;
-      cursor:pointer;
-      font-size:16px;
-      margin-top:15px;
+      background: #0070f3;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
       transition: 0.3s;
     }
     button:hover {
-      background:#45a049;
+      background: #0051c7;
     }
     #transaction-status {
-      margin-top:12px;
-      font-weight:bold;
-      font-size:16px;
+      margin-top: 15px;
+      font-weight: bold;
     }
-    img.logo {
-      max-width:120px;
-      margin-bottom:20px;
+    hr {
+      margin: 25px 0;
+      border: 0.5px solid #ddd;
+    }
+    footer {
+      text-align: center;
+      color: #555;
+      font-size: 14px;
+      margin-top: 30px;
     }
   </style>
 </head>
 
 <body>
   <main>
-    <div style="text-align:center;">
-      <img src="/logo.png" alt="NexWeba Logo" class="logo">
-      <h1>NexWeba</h1>
-    </div>
+    <!-- Logo -->
+    <img src="/logo.png" alt="NexWeba Logo" class="logo">
 
+    <h1>NexWeba</h1>
+
+    <p>
+      NexWeba is a professionally structured digital platform focused on web naming,
+      domain utilities, and ecosystem-ready applications designed to support
+      scalable and compliant digital projects.
+    </p>
+
+    <hr>
+
+    <h2>Platform Scope</h2>
     <ul>
-      <li><strong>Platform Scope:</strong> Web naming, domain utilities, ecosystem-ready design</li>
-      <li><strong>Network:</strong> Pi Testnet (Development & Testing)</li>
-      <li><strong>Compliance:</strong> No wallet access, no private keys, no ads, no financial activity</li>
+      <li>Structured web naming concepts</li>
+      <li>Domain utility frameworks</li>
+      <li>Ecosystem-ready application design</li>
+      <li>Long-term scalability planning</li>
+    </ul>
+
+    <hr>
+
+    <h2>Development & Network Status</h2>
+    <p>
+      NexWeba operates exclusively on the <strong>Pi Testnet</strong>.
+      All features are under development and testing.
+    </p>
+    <p><strong>No financial services, payments, wallet access, or transactions are enabled or requested.</strong></p>
+
+    <hr>
+
+    <h2>Compliance & Safety</h2>
+    <ul>
+      <li>No Pi wallet access</li>
+      <li>No private key requests</li>
+      <li>No personal data collection</li>
+      <li>No advertisements</li>
+      <li>No financial activity</li>
     </ul>
 
     <hr>
 
     <h2>Stage 10 – Process Transaction</h2>
-    <p>Click to process a Testnet transaction for Stage 10 compliance.</p>
+    <p>Click the button below to process a Testnet transaction for Stage 10 compliance.</p>
     <button id="stage10-btn">Process Testnet Transaction</button>
     <p id="transaction-status"></p>
 
     <hr>
 
     <h2>Roadmap</h2>
+    <p><strong>Phase 1 – Platform Foundation (Current)</strong></p>
     <ul>
-      <li><strong>Phase 1:</strong> Platform foundation & Testnet deployment</li>
-      <li><strong>Phase 2:</strong> Utilities expansion & non-financial user tools</li>
-      <li><strong>Phase 3:</strong> Ecosystem readiness & Mainnet preparation</li>
+      <li>Core platform setup</li>
+      <li>Naming framework design</li>
+      <li>Testnet deployment</li>
+    </ul>
+    <p><strong>Phase 2 – Utilities Expansion</strong></p>
+    <ul>
+      <li>Domain utility modules</li>
+      <li>Non-financial user tools</li>
+      <li>System optimization</li>
+    </ul>
+    <p><strong>Phase 3 – Ecosystem Readiness</strong></p>
+    <ul>
+      <li>Pi ecosystem compatibility review</li>
+      <li>Mainnet preparation after approval</li>
     </ul>
 
-    <p style="font-size:14px;color:#555;text-align:center;">
+    <footer>
       © 2026 NexWeba – Testnet Only
-    </p>
+    </footer>
   </main>
 
+  <!-- Pi SDK Testnet Transaction -->
+  <script src="https://cdn.jsdelivr.net/npm/pi-network-sdk/dist/pi-network.min.js"></script>
   <script>
-    const pi = new PiNetwork({sandbox:true}); // Sandbox for Testnet
+    const pi = new PiNetwork({ sandbox: true }); // Testnet
 
     async function processTransaction() {
+      const statusEl = document.getElementById("transaction-status");
       try {
+        // Replace with your **Testnet app wallet**
+        const recipientWallet = "YOUR_TESTNET_APP_WALLET";
+
         const tx = await pi.transaction({
-          recipient: "YOUR_TESTNET_APP_WALLET", // Replace with your Testnet wallet
-          amount: "0.01",
+          recipient: recipientWallet,
+          amount: "0.01", // small Testnet Pi
           currency: "Pi",
           memo: "Stage 10 Test"
         });
-        document.getElementById("transaction-status").textContent = "✅ Transaction successful!";
+        console.log(tx);
+        statusEl.textContent = "✅ Testnet transaction successful!";
       } catch (err) {
         console.error(err);
-        document.getElementById("transaction-status").textContent = "❌ Transaction failed. Check console.";
+        statusEl.textContent = "❌ Transaction failed. Check console for details.";
       }
     }
 
