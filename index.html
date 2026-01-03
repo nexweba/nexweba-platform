@@ -3,122 +3,61 @@
 <head>
   <meta charset="UTF-8" />
   <title>NexWeba – Stage 10</title>
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="NexWeba Stage 10 Testnet transaction for Pi Core Team compliance." />
-
-  <!-- Pi SDK -->
   <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
-  <!-- App Identity -->
-  <link rel="icon" href="/logo.png" />
-  <link rel="apple-touch-icon" href="/logo.png" />
-  <link rel="manifest" href="/manifest.json" />
-
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #ffffff;
-      color: #111;
-      margin: 0;
-      padding: 40px;
-    }
-    main {
-      max-width: 720px;
-      margin: auto;
-      text-align: center;
-    }
-    button {
-      padding: 14px 22px;
-      font-size: 16px;
-      background: #6b4eff;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:disabled {
-      background: #aaa;
-      cursor: not-allowed;
-    }
-    #status {
-      margin-top: 18px;
-      font-size: 14px;
-    }
-  </style>
 </head>
-
 <body>
-<main>
 
-  <img src="/logo.png" alt="NexWeba Logo" style="max-width:120px; margin-bottom:20px;">
+<h2>NexWeba – Stage 10</h2>
+<p>This processes a Pi Testnet transaction to meet Stage 10 requirements.</p>
 
-  <h1>NexWeba – Stage 10</h1>
-
-  <p>
-    This action processes a <strong>Pi Testnet transaction</strong> to satisfy
-    Pi Core Team Stage 10 requirements.
-  </p>
-
-  <button id="stage10-btn">Process Testnet Transaction</button>
-
-  <p id="status"></p>
-
-</main>
+<button id="stage10-btn">Process Testnet Transaction</button>
+<p id="status"></p>
 
 <script>
-  // Initialize Pi SDK
   Pi.init({ version: "2.0", sandbox: true });
 
-  const button = document.getElementById("stage10-btn");
   const status = document.getElementById("status");
 
   async function processTransaction() {
-    button.disabled = true;
-    status.textContent = "⏳ Waiting for Pi authentication...";
+    status.textContent = "⏳ Processing...";
 
     try {
-      // Authenticate user
-      await Pi.authenticate(
-        ["payments"],
-        function onIncompletePayment(payment) {
-          console.log("Incomplete payment:", payment);
-        }
-      );
+      await Pi.authenticate(["payments"], () => {});
 
-      status.textContent = "⏳ Processing Testnet transaction...";
-
-      // Create payment
       await Pi.createPayment(
         {
           amount: 0.01,
-          memo: "NexWeba Stage 10 Test",
-          metadata: { purpose: "stage10" }
+          memo: "NexWeba Stage 10",
+          metadata: { app: "NexWeba", stage: 10 }
         },
         {
-          onReadyForServerApproval(paymentId) {
-            // IMPORTANT: backend approval REQUIRED
-            fetch("/approve-payment", {
+          onReadyForServerApproval: async (paymentId) => {
+            status.textContent = "🔄 Approving on server...";
+
+            await fetch("https://YOUR_SERVER_URL/approve", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ paymentId })
             });
           },
 
-          onReadyForServerCompletion(paymentId, txid) {
-            console.log("Completed:", paymentId, txid);
-            status.textContent = "✅ Testnet transaction completed. Stage 10 passed.";
+          onReadyForServerCompletion: async (paymentId, txid) => {
+            await fetch("https://YOUR_SERVER_URL/complete", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ paymentId, txid })
+            });
+
+            status.textContent = "✅ Stage 10 completed successfully.";
           },
 
-          onCancel(paymentId) {
-            status.textContent = "❌ Transaction cancelled by user.";
-            button.disabled = false;
+          onCancel: () => {
+            status.textContent = "❌ Transaction cancelled.";
           },
 
-          onError(error, payment) {
-            console.error(error, payment);
+          onError: (error) => {
+            console.error(error);
             status.textContent = "❌ Transaction error.";
-            button.disabled = false;
           }
         }
       );
@@ -126,11 +65,11 @@
     } catch (err) {
       console.error(err);
       status.textContent = "❌ Authentication or SDK error.";
-      button.disabled = false;
     }
   }
 
-  button.addEventListener("click", processTransaction);
+  document.getElementById("stage10-btn")
+    .addEventListener("click", processTransaction);
 </script>
 
 </body>
